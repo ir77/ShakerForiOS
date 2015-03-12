@@ -8,22 +8,26 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController {
+class MasterViewController: UIViewController,  UICollectionViewDataSource, UICollectionViewDelegate {
 
-    var objects = [AnyObject]()
-
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
+    @IBOutlet weak var collectionView: UICollectionView!
+    var dataSource = [AnyObject]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.navigationItem.leftBarButtonItem = self.editButtonItem()
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "insertNewObject:")
-        self.navigationItem.rightBarButtonItem = addButton
+        println("http://localhost:6543/api/v1/projects")
+        var urlString = "http://localhost:6543/api/v1/projects"
+        var url = NSURL(string: urlString)
+        self.collectionView.backgroundColor = UIColor.whiteColor()
+        
+        var task = NSURLSession.sharedSession().dataTaskWithURL(url!, completionHandler:{data, response, error in
+            self.dataSource = NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments,error: nil) as NSArray
+            dispatch_async(dispatch_get_main_queue()) {
+                self.collectionView.reloadData()
+            }
+        })
+        task.resume()
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,55 +35,51 @@ class MasterViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func insertNewObject(sender: AnyObject) {
-        objects.insert(NSDate(), atIndex: 0)
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-    }
-
     // MARK: - Segues
-
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "showDetail" {
-            if let indexPath = self.tableView.indexPathForSelectedRow() {
-                let object = objects[indexPath.row] as NSDate
+            let cell = sender as CustomCell
+            let object: (AnyObject) = self.dataSource[cell.tag]
             (segue.destinationViewController as DetailViewController).detailItem = object
-            }
         }
     }
 
-    // MARK: - Table View
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return objects.count
-    }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-
-        let object = objects[indexPath.row] as NSDate
-        cell.textLabel!.text = object.description
+    // MARK: - Collection View
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell:CustomCell = collectionView.dequeueReusableCellWithReuseIdentifier("cell", forIndexPath: indexPath) as CustomCell
+        updateCell(cell, cellForRowAtIndexPath: indexPath)
         return cell
     }
-
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+    
+    private func updateCell( cell : CustomCell, cellForRowAtIndexPath indexPath : NSIndexPath) {
+        let row = indexPath.row
+        cell.tag = row
+        // cell.title.text = self.dataSource[row]["title"] as NSString
+        let tmpURL:String = self.dataSource[row]["package"] as String
+        let url = NSURL(string: "http://localhost:6543" + tmpURL)
+        let req = NSURLRequest(URL:url!)
+        
+        NSURLConnection.sendAsynchronousRequest(req, queue:NSOperationQueue.mainQueue()){(res, data, err) in
+            let image = UIImage(data:data)
+            cell.image.image = image
+        }
+        cell.backgroundColor = UIColor.whiteColor()
+        cell.layoutIfNeeded()
     }
-
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            objects.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+    
+    private func updateVisibleCells () {
+        for cell in collectionView.visibleCells() {
+            updateCell(cell as CustomCell, cellForRowAtIndexPath: collectionView.indexPathForCell(cell as CustomCell)!)
         }
     }
-
-
+    
+    
+    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.dataSource.count;
+    }
 }
 

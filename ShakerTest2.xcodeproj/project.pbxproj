@@ -14,6 +14,7 @@
 		B10234211AB19EDB00D74D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B10234201AB19EDB00D74D0B /* Images.xcassets */; };
 		B10234241AB19EDB00D74D0B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B10234221AB19EDB00D74D0B /* LaunchScreen.xib */; };
 		B10234301AB19EDB00D74D0B /* ShakerTest2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B102342F1AB19EDB00D74D0B /* ShakerTest2Tests.swift */; };
+		B132F5C71AB1A081002CD33F /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B132F5C61AB1A081002CD33F /* CustomCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +39,7 @@
 		B10234291AB19EDB00D74D0B /* ShakerTest2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShakerTest2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B102342E1AB19EDB00D74D0B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B102342F1AB19EDB00D74D0B /* ShakerTest2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakerTest2Tests.swift; sourceTree = "<group>"; };
+		B132F5C61AB1A081002CD33F /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,6 +84,7 @@
 				B10234171AB19EDB00D74D0B /* AppDelegate.swift */,
 				B10234191AB19EDB00D74D0B /* MasterViewController.swift */,
 				B102341B1AB19EDB00D74D0B /* DetailViewController.swift */,
+				B132F5C61AB1A081002CD33F /* CustomCell.swift */,
 				B102341D1AB19EDB00D74D0B /* Main.storyboard */,
 				B10234201AB19EDB00D74D0B /* Images.xcassets */,
 				B10234221AB19EDB00D74D0B /* LaunchScreen.xib */,
@@ -217,6 +220,7 @@
 			files = (
 				B102341C1AB19EDB00D74D0B /* DetailViewController.swift in Sources */,
 				B102341A1AB19EDB00D74D0B /* MasterViewController.swift in Sources */,
+				B132F5C71AB1A081002CD33F /* CustomCell.swift in Sources */,
 				B10234181AB19EDB00D74D0B /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -409,6 +413,7 @@
 				B10234351AB19EDB00D74D0B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B10234361AB19EDB00D74D0B /* Build configuration list for PBXNativeTarget "ShakerTest2Tests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +422,7 @@
 				B10234381AB19EDB00D74D0B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
