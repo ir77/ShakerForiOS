@@ -83,7 +83,12 @@ class DetailViewController: UIViewController {
         let array = self.dataSource[0]["chapters"]![nowChapter]["paragraphs"]! as NSArray
         if array[nowParagraph]["command"] as String == "background" {
             let tmpStr = array[nowParagraph]["args"] as String
-            let url = NSURL(string: "http://localhost:6543" + tmpStr)
+            // let url = NSURL(string: "http://localhost:6543" + tmpStr)
+            var url = NSURL(string: "http://153.120.25.112" + tmpStr)
+            if tmpStr.hasPrefix("http") {
+                url = NSURL(string:tmpStr)
+            }
+
             let req = NSURLRequest(URL:url!)
             
             NSURLConnection.sendAsynchronousRequest(req, queue:NSOperationQueue.mainQueue()){(res, data, err) in
@@ -193,7 +198,8 @@ class DetailViewController: UIViewController {
     // MARK: - Network
     func getParagraph() {
         if let detail: AnyObject = self.detailItem {
-            var urlString = "http://localhost:6543/api/v1/play?project_id="
+            // var urlString = "http://localhost:6543/api/v1/play?project_id="
+            var urlString = "http://153.120.25.112/api/v1/play?project_id="
             if let project_id = detail["id"] as? Int {
                 urlString = urlString + String(project_id)
             }

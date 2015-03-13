@@ -16,8 +16,9 @@ class MasterViewController: UIViewController,  UICollectionViewDataSource, UICol
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        println("http://localhost:6543/api/v1/projects")
-        var urlString = "http://localhost:6543/api/v1/projects"
+        // var urlString = "http://localhost:6543/api/v1/projects"
+        var urlString = "http://153.120.25.112/api/v1/projects"
+        println(urlString)
         var url = NSURL(string: urlString)
         self.collectionView.backgroundColor = UIColor.whiteColor()
         
@@ -56,7 +57,12 @@ class MasterViewController: UIViewController,  UICollectionViewDataSource, UICol
         cell.tag = row
         // cell.title.text = self.dataSource[row]["title"] as NSString
         let tmpURL:String = self.dataSource[row]["package"] as String
-        let url = NSURL(string: "http://localhost:6543" + tmpURL)
+        // let url = NSURL(string: "http://localhost:6543" + tmpURL)
+        var url = NSURL(string: "http://153.120.25.112" + tmpURL)
+        if tmpURL.hasPrefix("http") {
+            url = NSURL(string:tmpURL)
+        }
+
         let req = NSURLRequest(URL:url!)
         
         NSURLConnection.sendAsynchronousRequest(req, queue:NSOperationQueue.mainQueue()){(res, data, err) in
